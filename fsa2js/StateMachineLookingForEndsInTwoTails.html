@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<!--
+This file is provide without any warranty or any implied warranty of merchantability or fitness for a particular purpose.
+-->
+<body>
+
+<h2>JS FSM Detecting RegEx (H v T)*TT</h2>
+
+<script>
+const State = [
+	"Ends with heads", 
+	"Ends with 1 tails", 
+	"Ends with 2 tails", 
+	"Error"];
+const initialState = State[0];
+const acceptingStates = [State[2]];
+const errorState = State[3];
+const inputAlphabet = "HT";
+const transitionTable = 
+{
+	0: [State[0], State[1]], // "a"
+	1: [State[0], State[2]], // "b"
+	2: [State[0], State[2]], // "c"
+    3: [State[3], State[3]]  // "Error"
+}; 
+
+
+
+function returnNextState(state, input)
+{
+	if(inputAlphabet.includes(input) && State.includes(state))
+		return transitionTable[State.indexOf(state)][inputAlphabet.indexOf(input)];
+	else
+		return errorState;
+}
+
+let currentState = initialState;
+const inputSequence = "HTTHHTTTT";
+
+for(i = 0; i < inputSequence.length; i++)
+{
+    let currentInput = inputSequence.charAt(i);
+	document.write("<br>Current state: <strong>" + currentState + "</strong> - Input: <strong>" + currentInput + "</strong>");
+	if(!inputAlphabet.includes(currentInput)) currentState = errorState;
+    else currentState = returnNextState(currentState, currentInput);
+	document.write(" --> Next State: <strong>" + currentState + "</strong>");
+	if(acceptingStates.includes(currentState)) document.write(" (accepting state)");
+}
+document.write("<br>Ending state: " + currentState);
+if(acceptingStates.includes(currentState)) document.write(" (accepting state)");
+</script>
+
+</body>
+</html>
