@@ -19,10 +19,10 @@ const errorState = State[3];
 const inputAlphabet = "HT";
 const transitionTable = 
 {
-	0: [State[0], State[1]], // "a"
-	1: [State[0], State[2]], // "b"
-	2: [State[0], State[2]], // "c"
-    3: [State[3], State[3]]  // "Error"
+	0: [State[0], State[1]], // Transitions for "Ends with heads"
+	1: [State[0], State[2]], // Transitions for "Ends with 1 tails"
+	2: [State[0], State[2]], // Transitions for "Ends with 2 tails"
+	3: [State[3], State[3]]  // Transitions for "Error"
 }; 
 
 
@@ -40,10 +40,10 @@ const inputSequence = "HTTHHTTTT";
 
 for(i = 0; i < inputSequence.length; i++)
 {
-    let currentInput = inputSequence.charAt(i);
+	let currentInput = inputSequence.charAt(i);
 	document.write("<br>Current state: <strong>" + currentState + "</strong> - Input: <strong>" + currentInput + "</strong>");
 	if(!inputAlphabet.includes(currentInput)) currentState = errorState;
-    else currentState = returnNextState(currentState, currentInput);
+	else currentState = returnNextState(currentState, currentInput);
 	document.write(" --> Next State: <strong>" + currentState + "</strong>");
 	if(acceptingStates.includes(currentState)) document.write(" (accepting state)");
 }
