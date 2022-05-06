@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<!--
+This file is provide without any warranty or any implied warranty of merchantability or fitness for a particular purpose.
+-->
+<body style="color:rgb(163,221,128); background-color:#000000">
+
+<h2>JS FSM Detecting RegEx 01*(0 v 1)</h2>
+
+<script>
+const State = [
+	"No chars received", 	// Index 0
+	"Rcvd initial 0",		// Index 1
+	"Rcvd 01*0",			// Index 2
+	"Rcvd 01*1",			// Index 3
+	"Doesn't match RegEx",	// Index 4
+	"Error"];				// Index 5
+const initialState = State[0];
+const acceptingStates = [State[2], State[3]];
+const errorState = State[5];
+const inputAlphabet = "01";
+const transitionTable = 
+{
+	0: [State[1], State[4]],
+	1: [State[2], State[3]],
+	2: [State[4], State[4]],
+	3: [State[2], State[3]],
+	4: [State[4], State[4]],
+	5: [State[5], State[5]]
+}; 
+
+const inputSequence = "011111111110";
+
+let currentState = initialState;
+
+function returnNextState(state, input)
+{
+	if(inputAlphabet.includes(input) && State.includes(state))
+		return transitionTable[State.indexOf(state)][inputAlphabet.indexOf(input)];
+	else
+		return errorState;
+}
+
+for(i = 0; i < inputSequence.length; i++)
+{
+	let currentInput = inputSequence.charAt(i);
+	document.write("<br>Current state: <strong>" + currentState + "</strong> - Input: <strong>" + currentInput + "</strong>");
+	if(!inputAlphabet.includes(currentInput)) currentState = errorState;
+	else currentState = returnNextState(currentState, currentInput);
+	document.write(" --> Next State: <strong>" + currentState + "</strong>");
+	if(acceptingStates.includes(currentState)) document.write(" (accepting state)");
+}
+document.write("<br>Ending state: " + currentState);
+if(acceptingStates.includes(currentState)) document.write(" (accepting state)");
+</script>
+
+</body>
+</html>
